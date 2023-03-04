@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src = "./vendors/jquery.js"></script>
+    <script src = './scripts/client.js'></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Server Side Calculator</h1>
+
+    <div>   
+        <!-- these form/buttons need to be styled later so theyll be on the same line -->
+<input type ="text" id="firstNumberInput">
+
+<div class ='mathBtn'>
+<button id="additionBtn">+</button>
+<button id="subtractionBtn">-</button>
+<button id="multiplyBtn">*</button>
+<button id="divisionBtn">/</button>
+</div>
+
+<input type ="text" id="SecondNumberInput">
+
+<button id="equalsBtn">=</button>
+<button id="clearBtn">C</button>
+    </div>
+<!-- the below div will be where i want my answers to display
+I will need to make sure that this area is cleared every time a new equation is rendered to Dom -->
+<div id="answersArea">Answers display here</div>
+
+<!-- the below div will be where all my history of equations should display -->
+<div id="historyOfEquations">history of past equations display here</div>
+
+
+</body>
+</html>
