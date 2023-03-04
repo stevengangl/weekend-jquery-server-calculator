@@ -1,4 +1,4 @@
-//1️⃣
+const { response } = require("express");
 
 
 const bodyParser = require('body-parser');
@@ -14,33 +14,34 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //ROUTES⭐️
 let equation = {
-    inputOne: '',
-    math: '', 
-    inputTwo: '',
-    history: []
+    history:[{
+        firstInput: '5',
+        secondInput: '6',
+        mathSymbol: '+'
+    }]
+  
+
 }
 
-// GET
-app.get('/answers',(req, res) => {
-    //respond/send data
-    res.send(equation);//⭐️
+app.get('/inputs',(req, res) => {
+    //this is how we send data
+    res.send(equation);//⭐️sending the equation variable over to the client side GET
 });
+
+
+
 //POST ROUTE
 app.post('/addEquation', (req, res) => {
-    //data will be put on req.body
-console.log('in POST', req.body);
-
-//need to check if guesses
-
-//store the equations
-equation.history.push(req.body.inputOne)//🔴this might be a problem area
-equation.history.push(req.body.inputTwo)
-
-res.sendStatus(201);
-});
+        //data will be put on req.body
+    console.log('in post', req.body);
 
 
+     //need to store the equations
+     equation.history.push(req.body)//this stores the history of input 1
 
+
+    res.sendStatus(201);
+})
 
 
 
