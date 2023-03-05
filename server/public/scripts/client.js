@@ -1,116 +1,104 @@
-$(document).ready(handleReady);
+ 
 
-function handleReady(){
-    console.log('jQuery is loaded!')
 
-    $("#additionBtn").on('click', addition );// + button
-    $("#subtractionBtn").on('click', subtraction );// - button
-    $("#multiplyBtn").on('click', multiplication);// * button
-    $("#divisionBtn").on('click',division );// / button
-    $("#clearBtn").on('click', clearInputs);// clear fields button
-    $('#equalsBtn').on('click', equalsSign)
-    getInputInfo();
-}
 
-let inputsForm = {
-    firstInput: '',
-    secondInput:'', //This is grabbing the value from the input forms
-    mathSymbol:''
-}
+let inputData = {
+    inputOne: '',
+    inputTwo: '',
+    mathSymbol: ''
+};// were making a global object so we have a place to store the input data
+//             its an object because you can only send objects in the app.get
+//
+$(document).ready(onReady);
+console.log('jquery is working');
 
-function getInputInfo(){//THIS IS A GET REQUEST
-    $.ajax({
-        url: '/inputs',
-        method: 'GET'
-    })
-    .then((response) => {//⭐️⭐️equation variable is now response
-        console.log('data from the equation variable', response)//⭐️⭐️
-        render(response)
-    })
-}
+function onReady() {
+    $("#plusBtn").on('click', addition)
+    $("#subtractionBtn").on('click', subtraction)
+    $("#multiplicationBtn").on('click', multiplication)
+    $("#divisionBtn").on('click', division)
+    $("#equalsBtn").on('click', equals)
+    $("#clearBtn").on('click', clearInputs)
 
-function render(object){
-    $('#historyOfEquations').empty()
-    console.log('this is the object:',object.history)
-    for(let i = 0; i < object.history.length; i ++){
+    getServerSideInfo()
+};
 
-        console.log('object.history at index i:',object.history[i].results);//this is coming back undefined
-        //after the initial render
-        
-        $('#historyOfEquations').append(`
-        <li>
-        ${object.history[i].firstInput}
-        ${object.history[i].mathSymbol}
-        ${object.history[i].secondInput}
+function render(object) {
+    $('#historyField').empty()
+    $('#answerField').empty()
+    $('#answerField').append(`
+<li>
+${object.history[0].actualCalculation}
+</li>
+`);
 
-        </li>
-        `)
-    }
-    $('#answersArea').empty()
-console.log('in object . history . length:',object.history[0].results)
-
-    $('#answersArea').append(`
+    for (let i = 0; i < object.history.length; i++) {
+        $('#historyField').append(`
     <li>
-    ${object.history[object.history.length-1].results}
+    ${object.history[i].inputOne}
+    ${object.history[i].mathSymbol}
+    ${object.history[i].inputTwo}
+    = 
+    ${object.history[i].actualCalculation}
     </li>
     `)
     }
 
-    function results(){
-        //function to get results??
-    }
+};
 
 
-function clearInputs(){
-
-    $('#firstNumberInput').val('')
-    $('#secondNumberInput').val('')
-
-    console.log('in clearInputs()')
+function getServerSideInfo() {//THIS DOES A GET REQUEST
+    $.ajax({
+        method: 'GET',
+        url: '/channelTwo'
+    })
+        .then((response) => {
+            console.log('GET request worked', response)//response = input data object froms erver side
+            render(response);
+        })
 }
 
-function division(){
-    inputsForm.mathSymbol = '/';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
-    console.log('in division()')
-}
+function equals() {//this does a POST REQUEST
+    inputData.inputTwo = ($('#inputTwo').val())
+    console.log('in equals()');
 
-function multiplication(){
-    inputsForm.mathSymbol = '*';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
-    console.log('in multiplication()')
-}
-
-function subtraction(){
-    inputsForm.mathSymbol = '-';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
-    console.log('in subtraction()')
-}
-
-function addition(){
-    inputsForm.mathSymbol = '+';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
-}
-
-function equalsSign(){
-    //this functions job is to get values from the inputs
-console.log('inputs from client:',inputsForm)// this variable holds the client info from the dom
-    //ajaz to server
     $.ajax({
         method: 'POST',
-        url: '/addEquation',
-        data: inputsForm, //data must be an object
+        url: '/channelOne',
+        data: inputData//this turns into ⭐️req.body⭐️ when its sent to the server side POST
     })
-    .then((response) => {//⭐️equation object
-        console.log('post finished:',response);
-        getInputInfo();
-    })
+        .then((response) => {
+            console.log('post worked', response)
+            getServerSideInfo()
+        })
+}
+
+function division() {
+    inputData.inputOne = ($('#inputOne').val())
+    inputData.mathSymbol = '/'
+    console.log('in division');
+}
+
+function multiplication() {
+    inputData.inputOne = ($('#inputOne').val())
+    inputData.mathSymbol = '*'
+    console.log('in multiplication()');
+}
+
+function subtraction() {
+    inputData.inputOne = ($('#inputOne').val())
+    inputData.mathSymbol = '-'
+    console.log('in subtraction()');
+}
+
+function addition() {
+    inputData.inputOne = ($('#inputOne').val())
+    inputData.mathSymbol = '+'
+    console.log('in addition()')
+};
+
+function clearInputs() {
+    console.log('in clearInputs()');
+    $('#inputOne').val('')
+    $('#inputTwo').val('')
 }
