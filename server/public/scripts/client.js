@@ -33,9 +33,7 @@ function render(object){
     $('#historyOfEquations').empty()
     console.log('this is the object:',object.history)
     for(let i = 0; i < object.history.length; i ++){
-
-        console.log('object.history at index i:',object.history[i].results);
-        
+        console.log('object.history at index i:',object.history[i].firstInput);
         $('#historyOfEquations').append(`
         <li>
         ${object.history[i].firstInput}
@@ -44,11 +42,7 @@ function render(object){
         </li>
         `)
     }
-    // $('#answersArea').append(`
-    // <li>
-    // ${object.history[object.history.length-1].results}
-    // </li>
-    // `)
+
     }
 
 function clearInputs(){
@@ -82,7 +76,29 @@ function getInputInfo(){//THIS IS A GET REQUEST
         render(response)
     })
 }
-}
+
+function render(object){
+    // $('#historyOfEquations').empty()
+    console.log('this is the object:',object.history)
+    for(let i = 0; i < object.history.length; i ++){
+        console.log('object.history at index i:',object.history[i].firstInput);
+        $('#historyOfEquations').append(`
+        <li>
+        ${object.history[i].firstInput}
+        ${object.history[i].mathSymbol}
+        ${object.history[i].secondInput}
+        </li>
+        `)
+    }
+    console.log('what is:' object.history[object.history.length-1].results}
+    )
+    $('#answersArea').append(`
+    <li>
+    ${object.history[object.history.length-1].results}
+    </li>
+    `)
+
+    }
 
 function clearInputs(){
 
@@ -93,26 +109,17 @@ function clearInputs(){
 }
 
 function division(){
-    inputsForm.mathSymbol = '/';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
+
     console.log('in division()')
 }
 
 function multiplication(){
-    inputsForm.mathSymbol = '*';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
+
     console.log('in multiplication()')
 }
 
 function subtraction(){
-    inputsForm.mathSymbol = '-';
-    console.log('in addition()');
-    inputsForm.firstInput = $('#firstNumberInput').val();
-    inputsForm.secondInput = $('#secondNumberInput').val();
+
     console.log('in subtraction()')
 }
 
@@ -138,3 +145,44 @@ console.log('inputs from client:',inputsForm)// this variable holds the client i
     })
 }
 
+
+
+    console.log('in clearInputs()')
+}
+
+function division(){
+
+    console.log('in division()')
+}
+
+function multiplication(){
+
+    console.log('in multiplication()')
+}
+
+function subtraction(){
+
+    console.log('in subtraction()')
+}
+
+function addition(){
+    inputsForm.mathSymbol = '+';
+    console.log('in addition()');
+    inputsForm.firstInput = $('#firstNumberInput').val();
+    inputsForm.secondInput = $('#secondNumberInput').val();
+}
+
+function equalsSign(){
+    //this functions job is to get values from the inputs
+console.log('inputs from client:',inputsForm)// this variable holds the client info from the dom
+    //ajaz to server
+    $.ajax({
+        method: 'POST',
+        url: '/addEquation',
+        data: inputsForm, //data must be an object
+    })
+    .then((response) => {//⭐️equation object
+        console.log('post finished:',response);
+        getInputInfo();
+    })
+}

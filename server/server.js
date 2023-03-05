@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const PORT = 5000;
 
+const history = [];
 
 app.use(express.static('server/public'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,9 +32,39 @@ let equation = {
 app.post('/addEquation', (req, res) => {
         //data will be put on req.body
     console.log('in post', req.body);
+
+    const { firstInput, secondInput, mathSymbol } = req.body;
+
+    const num1 = Number(firstInput);
+    const num2 = Number(secondInput);
+
+    let result;
+switch (mathSymbol) {
+  case '+':
+    result = num1 + num2;
+    break;
+  case '-':
+    result = num1 - num2;
+    break;
+  case '*':
+    result = num1 * num2;
+    break;
+  case '/':
+    result = num1 / num2;
+    break;
+  default:
+    result = NaN;
+    break;
+}
+
      //need to store the equations
-     equation.history.push(req.body)//this stores the history of input 1
-    
+    //  equation.history.push(req.body)//this stores the history of input 1
+    history.push({
+        firstInput: num1,
+        secondInput: num2,
+        mathSymbol,
+        result
+      });
 
     res.sendStatus(201);
 })
@@ -45,3 +76,26 @@ app.post('/addEquation', (req, res) => {
 app.listen(PORT, () => {
     console.log('server running on port', PORT )
 });
+
+
+
+
+
+let result;
+switch (mathSymbol) {
+  case '+':
+    result = num1 + num2;
+    break;
+  case '-':
+    result = num1 - num2;
+    break;
+  case '*':
+    result = num1 * num2;
+    break;
+  case '/':
+    result = num1 / num2;
+    break;
+  default:
+    result = NaN;
+    break;
+}
