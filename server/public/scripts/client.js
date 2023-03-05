@@ -34,22 +34,32 @@ function render(object){
     console.log('this is the object:',object.history)
     for(let i = 0; i < object.history.length; i ++){
 
-        console.log('object.history at index i:',object.history[i].results);
+        console.log('object.history at index i:',object.history[i].results);//this is coming back undefined
+        //after the initial render
         
         $('#historyOfEquations').append(`
         <li>
         ${object.history[i].firstInput}
         ${object.history[i].mathSymbol}
         ${object.history[i].secondInput}
+
         </li>
         `)
     }
-    // $('#answersArea').append(`
-    // <li>
-    // ${object.history[object.history.length-1].results}
-    // </li>
-    // `)
+    $('#answersArea').empty()
+console.log('in object . history . length:',object.history[0].results)
+
+    $('#answersArea').append(`
+    <li>
+    ${object.history[object.history.length-1].results}
+    </li>
+    `)
     }
+
+    function results(){
+        //function to get results??
+    }
+
 
 function clearInputs(){
 
