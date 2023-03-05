@@ -1,4 +1,3 @@
-
 $(document).ready(handleReady);
 
 function handleReady(){
@@ -13,28 +12,10 @@ function handleReady(){
     getInputInfo();
 }
 
-
-
-
-function equalsSign(){
-    //this functions job is to get values from the inputs
 let inputsForm = {
-    input1: $('#firstNumberInput').val(),
-    input2: $('#secondNumberInput').val(), //This is grabbing the value from the input forms
-    // mathSign: $('.mathBtn').val()🔴🔵this isnt giving me a value so ima comment it out for now
-}
-
-console.log('inputs from client:',inputsForm)// this variable holds the client info from the dom
-    //ajaz to server
-    $.ajax({
-        method: 'POST',
-        url: '/addEquation',
-        data: inputsForm, //data must be an object
-    })
-    .then((response) => {//⭐️equation object
-        console.log('post finished:',response);
-        getInputInfo();
-    })
+    firstInput: '',
+    secondInput:'', //This is grabbing the value from the input forms
+    mathSymbol:''
 }
 
 function getInputInfo(){//THIS IS A GET REQUEST
@@ -46,10 +27,10 @@ function getInputInfo(){//THIS IS A GET REQUEST
         console.log('data from the equation variable', response)//⭐️⭐️
         render(response)
     })
-
 }
 
 function render(object){
+    $('#historyOfEquations').empty()
     console.log('this is the object:',object.history)
     for(let i = 0; i < object.history.length; i ++){
         console.log('object.history at index i:',object.history[i].firstInput);
@@ -58,8 +39,6 @@ function render(object){
         ${object.history[i].firstInput}
         ${object.history[i].mathSymbol}
         ${object.history[i].secondInput}
-
-
         </li>
         `)
     }
@@ -87,8 +66,23 @@ function subtraction(){
 }
 
 function addition(){
-
-    console.log('in addition()')
+    inputsForm.mathSymbol = '+';
+    console.log('in addition()');
+    inputsForm.firstInput = $('#firstNumberInput').val();
+    inputsForm.secondInput = $('#secondNumberInput').val();
 }
 
-
+function equalsSign(){
+    //this functions job is to get values from the inputs
+console.log('inputs from client:',inputsForm)// this variable holds the client info from the dom
+    //ajaz to server
+    $.ajax({
+        method: 'POST',
+        url: '/addEquation',
+        data: inputsForm, //data must be an object
+    })
+    .then((response) => {//⭐️equation object
+        console.log('post finished:',response);
+        getInputInfo();
+    })
+}
