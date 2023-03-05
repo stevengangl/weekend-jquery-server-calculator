@@ -22,7 +22,8 @@ let equation = {
     history:[{
         firstInput: '5',
         secondInput: '6',
-        mathSymbol: '+'
+        mathSymbol: '+',
+        results: '6'
     }]
 }
 
